@@ -1,0 +1,37 @@
+Animaniac config file format.
+
+Any image file you want to animate with Animaniac must have an associated config file.
+By default, we look for the image file with its suffix replaced by "cfg", eg:
+  etc/sprites.png => etc/sprites.cfg
+  
+File is processed linewise.
+Leading and trailing whitespace is stripped, empty lines ignored, then the first char tells us what to do:
+  #  Comment, ignore line. NB comments are full-line only.
+  [  Begin a new face.
+  =  Set face parameter (applying to all frames).
+  -  Define a frame.
+  
+[FACE_NAME]
+  Trailing ']' is technically optional.
+  Only G0 bytes are accepted (0x20..0x7e).
+  We enforce an arbitrary length limit of 64 bytes.
+  Everything below this line, to the next "[]" line, constitutes one face.
+  
+= KEY VALUE...
+  rate
+    VALUE ends either "hz", "ms", or "f".
+    Timing is always quantized to 60hz frames; we'll match your value best effort.
+  size W H
+    Size of all frames in pixels, in case some are smaller than others.
+    If you declare any frame larger than this, it's an error.
+    If you do not declare a size, we implicitly use the largest frame.
+  anchor NW|N|NE|W|CTR|E|SW|S|SE
+    Where to attach frames smaller than the "size" box.
+    Default CTR.
+    
+- X Y W H DURATION ANCHOR
+  Define a frame.
+  (X,Y) are required. Top-left corner of the image in pixels.
+  (W,H) may be omitted if the face has a shared "size".
+  (DURATION) requires a unit suffix, eg: 32ms = 2f = 30hz. May omit if shared "rate".
+  (ANCHOR) optional, overrides face's default.

@@ -571,6 +571,19 @@ int an_animator_use_face(struct an_animator *animator,int faceid) {
   return 0;
 }
 
+int an_animator_use_face_by_name(struct an_animator *animator,const char *name,int namec) {
+  if (!name) return -1;
+  if (namec<0) { namec=0; while (name[namec]) namec++; }
+  int faceid=0;
+  const struct an_face *face=animator->facev;
+  for (;faceid<animator->facec;faceid++,face++) {
+    if (face->namec!=namec) continue;
+    if (memcmp(name,face->name,namec)) continue;
+    return an_animator_use_face(animator,faceid);
+  }
+  return -1;
+}
+
 /* Update.
  */
 

@@ -12,3 +12,5 @@ out/animaniac PATH_TO_PNG_FILE
 
 Create a file eg "mypix.cfg" adjacent to "mypix.png".
 See `etc/config-format.txt` for what goes in it.
+
+Enter a face name or index at stdin to change the displayed face.

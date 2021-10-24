@@ -51,6 +51,7 @@ int an_animator_set_config(struct an_animator *animator,const char *src,int srcc
 int an_animator_count_faces(const struct an_animator *animator);
 int an_animator_get_face_name(char **name,const struct an_animator *animator,int faceid);
 int an_animator_use_face(struct an_animator *animator,int faceid);
+int an_animator_use_face_by_name(struct an_animator *animator,const char *name,int namec);
 
 /* Call at 60 Hz.
  * Returns >0 if the image changed, 0 if no change, or <0 for unlikely errors.

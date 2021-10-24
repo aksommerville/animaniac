@@ -70,7 +70,28 @@ static int cb_stdin(const void *src,int srcc,void *userdata) {
     app->quit=1;
     return 0;
   }
-  //TODO I originally imagined accepting config adjustments via stdin. Want to do that?
+  
+  const char *name=src;
+  int namec=srcc;
+  while (namec&&((unsigned char)name[namec-1]<=0x20)) namec--;
+  while (namec&&((unsigned char)name[0]<=0x20)) { name++; namec--; }
+  if (!namec) return 0; // just enter... meaningless
+  
+  if (an_animator_use_face_by_name(app->animator,name,namec)>=0) {
+    fprintf(stderr,"Showing face '%.*s'\n",namec,name);
+    return 0;
+  }
+  
+  int faceid;
+  if (an_eval_int(&faceid,name,namec)==namec) {
+    if (an_animator_use_face(app->animator,faceid)>=0) {
+      if ((namec=an_animator_get_face_name((char**)&name,app->animator,faceid))<0) namec=0;
+      fprintf(stderr,"Showing face %d ('%.*s')\n",faceid,namec,name);
+      return 0;
+    }
+  }
+  
+  fprintf(stderr,"Ignoring unexpected command '%.*s'\n",namec,name);
   return 0;
 }
 
